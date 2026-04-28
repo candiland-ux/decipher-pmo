@@ -740,7 +740,16 @@ function tokenize(text) {
   return text.toLowerCase()
     .replace(/[^a-z0-9\s-]/g, ' ')
     .split(/\s+/)
-    .filter(w => w.length >= 3 && !STOPWORDS.has(w));
+    .filter(w => {
+      if (STOPWORDS.has(w)) return false;
+      if (w.length >= 3) return true;
+      // Allow short tokens (1-2 chars) only if they contain a digit
+      // This preserves level identifiers like l3, l4, l5, l6, l7, l8
+      // and version-like tokens like v1, v2, while still filtering out
+      // most noise from short conjunctions and articles
+      if (w.length >= 1 && /\d/.test(w)) return true;
+      return false;
+    });
 }
 
 // Pre-compute searchable tokens per chunk
