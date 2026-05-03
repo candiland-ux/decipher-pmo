@@ -165,6 +165,60 @@ main { max-width: 820px; margin: 0 auto; padding: 1.75rem; padding-bottom: 8rem;
   font-family: var(--mono-font); font-size: 0.68rem; color: var(--gold);
   letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem;
 }
+
+/* Resources block — matches examples-grid rhythm, sits below prompts */
+.resources-divider {
+  border: none;
+  border-top: 1px solid var(--gold-line);
+  margin: 3rem auto 2.5rem;
+  max-width: 200px;
+  opacity: 0.6;
+}
+.resources-eyebrow {
+  font-family: var(--mono-font); font-size: 0.7rem; color: var(--gold);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  text-align: center; margin-bottom: 2rem;
+}
+.resources-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 2rem;
+}
+.resource-item {
+  display: block; text-decoration: none; color: inherit;
+  padding: 0.35rem 0;
+  transition: transform 0.2s;
+}
+.resource-item:hover { transform: translateX(2px); }
+.resource-item:hover .resource-title { color: var(--gold); }
+.resource-meta {
+  font-family: var(--mono-font); font-size: 0.62rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.45rem;
+  display: flex; align-items: center; gap: 0.55rem;
+}
+.resource-type {
+  padding: 0.15rem 0.4rem; border-radius: 3px;
+  font-weight: 500;
+}
+.resource-type[data-type="xlsx"] {
+  background: var(--teal-soft); color: var(--teal);
+  border: 1px solid var(--teal-line);
+}
+.resource-type[data-type="docx"] {
+  background: var(--eng-blue-soft); color: var(--eng-blue);
+  border: 1px solid var(--eng-blue-line);
+}
+.resource-version { color: var(--text-faint); }
+.resource-title {
+  font-family: var(--body-font); font-size: 0.95rem;
+  color: rgba(232, 228, 220, 0.85);
+  font-weight: 600; line-height: 1.4;
+  margin-bottom: 0.25rem;
+  transition: color 0.2s;
+}
+.resource-desc {
+  font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;
+  font-style: italic;
+}
 .example-query {
   display: block; background: transparent; border: none; padding: 0.35rem 0;
   text-align: left; width: 100%; cursor: pointer;
@@ -373,6 +427,8 @@ main { max-width: 820px; margin: 0 auto; padding: 1.75rem; padding-bottom: 8rem;
 @media (max-width: 768px) {
   .brand-tagline { display: none; }
   .examples-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .resources-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+  .resources-eyebrow { text-align: left; }
   main { padding: 1.25rem; padding-bottom: 4rem; }
   header { padding: 1rem 1.25rem; }
   .welcome-headline {
@@ -754,6 +810,19 @@ main { max-width: 820px; margin: 0 auto; padding: 1.75rem; padding-bottom: 8rem;
   letter-spacing: 0.04em;
   text-align: center;
 }
+.toc-foot a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--gold-line-strong);
+  transition: color 0.2s, border-color 0.2s;
+}
+.toc-foot a:hover {
+  color: var(--text-bright);
+  border-bottom-color: var(--gold);
+}
+.toc-foot-divider {
+  margin-top: 0.5rem;
+}
 @media (max-width: 600px) {
   .toc-body { grid-template-columns: 1fr; gap: 1rem; }
 }
@@ -1010,7 +1079,10 @@ main { max-width: 820px; margin: 0 auto; padding: 1.75rem; padding-bottom: 8rem;
         </div>
       </div>
 
-      <div class="toc-foot">Click any item to run it as a search.</div>
+      <div class="toc-foot">
+        Click any item above to jump to it.
+        <div class="toc-foot-divider">Working files (DOCX, XLSX) are below the prompts — <a href="#downloads" onclick="jumpToDownloads(event)">jump to downloads ↓</a></div>
+      </div>
     </div>
   </details>
 
@@ -1073,6 +1145,57 @@ main { max-width: 820px; margin: 0 auto; padding: 1.75rem; padding-bottom: 8rem;
         <button class="example-query" onclick="runExample(this)">"building a PMO from zero"</button>
         <button class="example-query" onclick="runExample(this)">"mentoring TPMs"</button>
       </div>
+    </div>
+
+    <hr class="resources-divider" id="downloads">
+    <p class="resources-eyebrow">Take the working files with you</p>
+    <div class="resources-grid">
+
+      <a class="resource-item" href="resources/pmo-framework-v1.1.docx" download>
+        <div class="resource-meta">
+          <span class="resource-type" data-type="docx">DOCX</span>
+          <span class="resource-version">v1.1</span>
+        </div>
+        <div class="resource-title">PMO Framework</div>
+        <div class="resource-desc">Methodology — 32 artifacts across the project lifecycle.</div>
+      </a>
+
+      <a class="resource-item" href="resources/pmo-templates-pack-v1.1.docx" download>
+        <div class="resource-meta">
+          <span class="resource-type" data-type="docx">DOCX</span>
+          <span class="resource-version">v1.1</span>
+        </div>
+        <div class="resource-title">Templates Pack</div>
+        <div class="resource-desc">13 fillable standalone templates by lifecycle phase.</div>
+      </a>
+
+      <a class="resource-item" href="resources/pmo-worked-examples-v1.1.docx" download>
+        <div class="resource-meta">
+          <span class="resource-type" data-type="docx">DOCX</span>
+          <span class="resource-version">v1.1</span>
+        </div>
+        <div class="resource-title">Worked Examples</div>
+        <div class="resource-desc">Five fully populated artifacts — what 'good' looks like.</div>
+      </a>
+
+      <a class="resource-item" href="resources/pmo-project-workbook-v1.2.xlsx" download>
+        <div class="resource-meta">
+          <span class="resource-type" data-type="xlsx">XLSX</span>
+          <span class="resource-version">v1.2</span>
+        </div>
+        <div class="resource-title">Project Workbook</div>
+        <div class="resource-desc">17 live tabs for tracking a single project end-to-end.</div>
+      </a>
+
+      <a class="resource-item" href="resources/pmo-program-workbook-v1.2.xlsx" download>
+        <div class="resource-meta">
+          <span class="resource-type" data-type="xlsx">XLSX</span>
+          <span class="resource-version">v1.2</span>
+        </div>
+        <div class="resource-title">Program Workbook</div>
+        <div class="resource-desc">12 live tabs for multi-component program tracking.</div>
+      </a>
+
     </div>
 
     <div class="disclaimer-note">
@@ -1972,6 +2095,23 @@ function runQuery(text) {
   input.focus();
   // Scroll search box into view so the user sees results land
   document.querySelector('.search-box').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function jumpToDownloads(e) {
+  e.preventDefault();
+  // Clear any active search so the examples/resources section is visible
+  const input = document.getElementById('searchInput');
+  if (input.value) {
+    input.value = '';
+    doSearch();
+    if (typeof updateClearButton === 'function') updateClearButton();
+  }
+  // Collapse the TOC disclosure
+  const toc = document.querySelector('.toc-disclosure');
+  if (toc) toc.removeAttribute('open');
+  // Smooth scroll to the downloads anchor
+  const target = document.getElementById('downloads');
+  if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ============================================
