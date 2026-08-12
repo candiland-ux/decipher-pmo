@@ -544,5 +544,51 @@ xlsx/xlsx.mjs:
 */
 </script>
 <noscript>Decipher PMO needs JavaScript. The playbook downloads: Decipher-PMO-Playbook.pdf</noscript>
+<style>#dp-econsent{position:fixed;inset:0;background:rgba(20,24,23,.5);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+#dp-econsent .dp-ec-card{max-width:540px;background:#fff;border:1px solid #D8DEDB;border-radius:8px;padding:24px;box-shadow:0 12px 40px rgba(0,0,0,.22);font-family:'IBM Plex Sans',-apple-system,sans-serif}
+#dp-econsent h2{font-size:18px;margin:0 0 10px;color:#141817}
+#dp-econsent p{font-size:13.5px;line-height:1.55;color:#4A5350;margin:0 0 10px}
+#dp-econsent .dp-ec-row{display:flex;gap:10px;margin-top:14px}
+#dp-econsent #dp-ec-agree{background:#141817;color:#fff;border:0;border-radius:4px;padding:11px 16px;font-size:13.5px;font-weight:600;cursor:pointer}
+#dp-econsent #dp-ec-back{background:#fff;color:#4A5350;border:1px solid #D8DEDB;border-radius:4px;padding:11px 16px;font-size:13.5px;cursor:pointer}
+</style>
+<script>(function () {
+  var K = "dpAiConsent";
+  function ok() { try { return localStorage.getItem(K) === "yes"; } catch (e) { return false; } }
+  if (ok()) return;
+  var shown = false;
+  function overlay() {
+    if (shown || ok() || document.getElementById("dp-econsent")) return;
+    shown = true;
+    var w = document.createElement("div");
+    w.id = "dp-econsent";
+    w.innerHTML =
+      '<div class="dp-ec-card" role="dialog" aria-modal="true" aria-label="AI drafting consent">' +
+      "<h2>Before you use Build</h2>" +
+      "<p>The Build feature drafts documents with AI. When you use it, the project details you type or dictate here \u2014 your description, gap answers, and revision notes, and nothing else \u2014 are sent to <b>Anthropic</b> (api.anthropic.com), a third-party AI service, using an API key you provide.</p>" +
+      "<p>Decipher runs no servers and never receives or stores your content. Data is processed under <a href=\"https://www.anthropic.com/legal/privacy\" target=\"_blank\" rel=\"noreferrer\">Anthropic\u2019s privacy policy</a>. Nothing is sent without your agreement. See our <a href=\"https://candiland-ux.github.io/decipher-pmo/privacy.html\" target=\"_blank\" rel=\"noreferrer\">privacy policy</a>.</p>" +
+      '<div class="dp-ec-row"><button id="dp-ec-agree">Agree and continue</button><button id="dp-ec-back">Go back</button></div>' +
+      "</div>";
+    document.body.appendChild(w);
+    document.getElementById("dp-ec-agree").onclick = function () {
+      try { localStorage.setItem(K, "yes"); } catch (e) {}
+      w.remove();
+    };
+    document.getElementById("dp-ec-back").onclick = function () {
+      w.remove(); shown = false;
+      var home = document.querySelector(".dp-nav button");
+      if (home) home.click();
+    };
+  }
+  function probe() {
+    if (ok()) return true;
+    if (!shown && document.querySelector(".dp-type, .dp-capture")) overlay();
+    return false;
+  }
+  var mo = new MutationObserver(function () { if (probe()) mo.disconnect(); });
+  if (document.documentElement) mo.observe(document.documentElement, { subtree: true, childList: true });
+  var iv = setInterval(function () { if (probe()) clearInterval(iv); }, 900);
+})();
+</script>
 </body>
 </html>
